@@ -58,6 +58,7 @@ public class CreateModule extends SimpleModule {
                 .setTabKey(tab)
                 .defaultRecipe()
                 .setRenderType(RenderLayer.CUTOUT_MIPPED)
+                .copyParentDrop() //REASON: ensure blocks's dropping when Diagonal Fences is installed
                 .build();
         this.addEntry(windowPanes);
 
