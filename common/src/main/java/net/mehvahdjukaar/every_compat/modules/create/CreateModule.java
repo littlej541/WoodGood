@@ -20,6 +20,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -95,6 +96,17 @@ public class CreateModule extends SimpleModule {
     @Override
     // Recipes
     public void addDynamicServerResources(ServerDynamicResourcesHandler handler, ResourceManager manager) {
+        if (PlatHelper.isModLoaded("diagonalwindows")) {
+            String childKey = windowPanes.getChildKey(this);
+
+            windowPanes.getBaseType().getChildren().stream().filter(child -> child.getKey().equals(childKey)).findFirst()
+                    .ifPresent(oakWindowPane -> {
+                        if (((Block) oakWindowPane.getValue()).asItem() instanceof BlockItem bi) {
+                            oakWindowPane.setValue(bi.getBlock());
+                        }
+                    });
+        }
+
         super.addDynamicServerResources(handler, manager);
         if (!PlatHelper.isModLoaded("sawmill")) {
             for (WoodType w : WoodTypeRegistry.getTypes()) {
